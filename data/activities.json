@@ -1,0 +1,61 @@
+[
+  {
+    "name": "קארטינג",
+    "category": "אדרנלין",
+    "destinations": [
+      "prague",
+      "krakow",
+      "budapest"
+    ]
+  },
+  {
+    "name": "טרקטורונים",
+    "category": "אדרנלין",
+    "destinations": [
+      "prague",
+      "krakow"
+    ]
+  },
+  {
+    "name": "נהיגת רכב ספורט",
+    "category": "אדרנלין",
+    "destinations": [
+      "prague",
+      "krakow",
+      "budapest"
+    ]
+  },
+  {
+    "name": "פארק מים",
+    "category": "רוגע",
+    "destinations": [
+      "prague",
+      "krakow"
+    ]
+  },
+  {
+    "name": "מרחצאות",
+    "category": "רוגע",
+    "destinations": [
+      "budapest"
+    ]
+  },
+  {
+    "name": "קזינו",
+    "category": "ערב",
+    "destinations": [
+      "prague",
+      "krakow",
+      "budapest"
+    ]
+  },
+  {
+    "name": "טעימות בירה",
+    "category": "אוכל ושתייה",
+    "destinations": [
+      "prague",
+      "krakow",
+      "budapest"
+    ]
+  }
+]

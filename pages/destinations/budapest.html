@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="השוואת יעדים ומסלולים לטיול חברים באוקטובר">
+<title>בודפשט</title>
+<link rel="stylesheet" href="../../assets/css/main.css">
+<script src="../../assets/js/app.js" defer></script>
+<script src="../../assets/js/destination.js" defer></script>
+</head>
+<body data-destination="budapest">
+<header class="site-header">
+  <div class="navbar">
+    <a class="brand" href="../../index.html"><span>טיול חברים · אוקטובר</span><span class="header-version">v1.0.13</span></a>
+    <nav class="nav-links">
+      <a data-nav href="../../index.html">בית</a>
+      <a data-nav href="../../pages/compare.html">השוואה</a>
+      
+      
+      <a data-nav href="../../pages/destinations/prague.html">פראג</a>
+      <a data-nav href="../../pages/destinations/krakow.html">קרקוב</a>
+      <a data-nav href="../../pages/destinations/budapest.html">בודפשט</a>
+    </nav>
+  </div>
+</header>
+<main class="container">
+<section class="hero destination-hero destination-hero-polished">
+  <div>
+    <span class="eyebrow">יעד מועמד · השבוע של 12 באוקטובר</span>
+    <h1 id="title"></h1>
+    <p id="tagline"></p>
+    <div class="badges" id="highlights"></div>
+  </div>
+  <div class="hero-summary">
+    <div class="summary-label">ציון כולל</div>
+    <div class="summary-score" id="score"></div>
+    <div class="summary-label">תקציב משוער לאדם</div>
+    <div class="metric" id="budget"></div>
+  </div>
+</section>
+
+
+<section class="section destination-flights-section" aria-labelledby="destination-flights-title">
+  <div class="section-header">
+    <div>
+      <span class="eyebrow">שלב 2.1 · טיסות</span>
+      <h2 id="destination-flights-title">אפשרויות טיסה ליעד</h2>
+      <p id="flight-route-summary" class="muted"></p>
+    </div>
+  </div>
+  <div id="destination-flights" class="destination-flights-card card">
+    <p class="muted">טוען אפשרויות טיסה…</p>
+  </div>
+</section>
+
+<section class="section destination-overview-grid">
+  <div class="card">
+    <span class="eyebrow">למה כן</span>
+    <h3>יתרונות</h3>
+    <ul id="pros" class="list"></ul>
+  </div>
+  <div class="card">
+    <span class="eyebrow">מה לקחת בחשבון</span>
+    <h3>חסרונות</h3>
+    <ul id="cons" class="list"></ul>
+  </div>
+  <div class="card">
+    <span class="eyebrow">מזג אוויר</span>
+    <h3>אמצע אוקטובר</h3>
+    <div id="weather-details" class="weather-details"></div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-header">
+    <div>
+      <span class="eyebrow">מסלול מוצע</span>
+      <h2>4 ימים / 3 </h2>
+    </div>
+  </div>
+  <table>
+    <thead><tr><th>יום</th><th>בוקר</th><th>צהריים</th><th>ערב</th></tr></thead>
+    <tbody id="itinerary-body"></tbody>
+  </table>
+</section>
+
+<section class="section">
+  <div class="section-header">
+    <div>
+      <span class="eyebrow">תקציב</span>
+      <h2>פירוט עלויות</h2>
+    </div>
+  </div>
+  <table>
+    <thead><tr><th>סעיף</th><th>מינימום</th><th>מקסימום</th></tr></thead>
+    <tbody id="costs-body"></tbody>
+  </table>
+</section>
+
+<section class="section grid">
+  <div class="card module-placeholder">
+    <span class="eyebrow">בקרוב</span>
+    <h3>🏨 מלונות</h3>
+    <p>אזורי לינה, מלונות מומלצים וטווחי מחיר.</p>
+  </div>
+  <div class="card module-placeholder">
+    <span class="eyebrow">בקרוב</span>
+    <h3>🍽️ מסעדות</h3>
+    <p>מסעדות, בירה, סטייקים והמלצות לקבוצה.</p>
+  </div>
+  <div class="card module-placeholder">
+    <span class="eyebrow">בקרוב</span>
+    <h3>🗺️ מפה</h3>
+    <p>כל האטרקציות והנקודות החשובות במקום אחד.</p>
+  </div>
+</section>
+</main>
+<footer>בסיס מודולרי להמשך תכנון הטיול · GitHub Pages Ready</footer>
+</body>
+</html>

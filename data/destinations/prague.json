@@ -1,0 +1,127 @@
+{
+  "id": "prague",
+  "name": "פראג",
+  "country": "צ'כיה",
+  "flag": "🇨🇿",
+  "tagline": "הפשרה המאוזנת: עיר מרשימה, אטרקציות מגוונות ופעילות מוטורית.",
+  "score": 9.4,
+  "budget": {
+    "min": 845,
+    "max": 1445,
+    "currency": "€"
+  },
+  "highlights": [
+    "Aquapalace",
+    "קארטינג",
+    "נהיגת רכב ספורט",
+    "קזינו",
+    "Beer Spa"
+  ],
+  "pros": [
+    "מגוון חזק בתוך העיר",
+    "יעד חדש יחסית לחבורה",
+    "שילוב טוב של עיר ואטרקציות"
+  ],
+  "cons": [
+    "יקרה יותר מקרקוב",
+    "עמוסה ותיירותית יחסית"
+  ],
+  "itinerary": [
+    {
+      "day": 1,
+      "morning": "טיסה וצ'ק-אין",
+      "afternoon": "העיר העתיקה וגשר קארל",
+      "evening": "סטייק ופאב בירה"
+    },
+    {
+      "day": 2,
+      "morning": "קארטינג",
+      "afternoon": "נהיגת רכב ספורט או טרקטורונים",
+      "evening": "קזינו"
+    },
+    {
+      "day": 3,
+      "morning": "Aquapalace",
+      "afternoon": "Beer Spa או טעימות בירה",
+      "evening": "מסעדה טובה"
+    },
+    {
+      "day": 4,
+      "morning": "טירת פראג",
+      "afternoon": "קניות וארוחת צהריים",
+      "evening": "טיסה"
+    }
+  ],
+  "costs": [
+    [
+      "טיסות",
+      180,
+      280
+    ],
+    [
+      "מלון 4★",
+      180,
+      250
+    ],
+    [
+      "אוכל ובירות",
+      180,
+      250
+    ],
+    [
+      "תחבורה",
+      30,
+      50
+    ],
+    [
+      "קארטינג",
+      35,
+      50
+    ],
+    [
+      "Aquapalace",
+      50,
+      55
+    ],
+    [
+      "קזינו",
+      50,
+      100
+    ],
+    [
+      "טרקטורונים",
+      80,
+      150
+    ],
+    [
+      "נהיגת רכב ספורט",
+      150,
+      300
+    ]
+  ],
+  "status": "candidate",
+  "heroImage": "assets/images/destinations/prague-hero.jpg",
+  "gallery": [],
+  "weather": {
+    "period": "השבוע של 12 באוקטובר",
+    "summary": "קריר ונוח לטיולים רגליים, עם סיכוי בינוני לגשם מקומי.",
+    "dayTemperature": "13–15°C",
+    "nightTemperature": "5–7°C",
+    "rainChance": "בינוני",
+    "daylight": "כ־10 שעות ו־58 דקות",
+    "sunrise": "07:19",
+    "sunset": "18:17",
+    "comfort": "8.2/10"
+  },
+  "transport": {
+    "airportTransfer": "יושלם בהמשך",
+    "localTransport": "יושלם בהמשך"
+  },
+  "sections": {
+    "hotels": true,
+    "restaurants": true,
+    "activities": true,
+    "casino": true,
+    "map": true
+  }
+}

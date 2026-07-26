@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="השוואת יעדים ומסלולים לטיול חברים באוקטובר">
+<title>מחשבון תקציב</title>
+<link rel="stylesheet" href="../assets/css/main.css">
+<script src="../assets/js/app.js" defer></script>
+<script src="../assets/js/budget.js" defer></script>
+</head>
+<body >
+<header class="site-header">
+  <div class="navbar">
+    <a class="brand" href="../index.html"><span>טיול חברים · אוקטובר</span><span class="header-version">v1.0.13</span></a>
+    <nav class="nav-links">
+      <a data-nav href="../index.html">בית</a>
+      <a data-nav href="../pages/compare.html">השוואה</a>
+      
+      
+      <a data-nav href="../pages/destinations/prague.html">פראג</a>
+      <a data-nav href="../pages/destinations/krakow.html">קרקוב</a>
+      <a data-nav href="../pages/destinations/budapest.html">בודפשט</a>
+    </nav>
+  </div>
+</header>
+<main class="container">
+<section class="hero"><h1>מחשבון תקציב</h1><p>בחר יעד ומספר נוסעים כדי לקבל טווח עלות כולל.</p></section>
+<section class="section card">
+  <div class="controls">
+    <label>יעד <select class="control" id="destination"></select></label>
+    <label> <input class="control" id="people" type="number" min="1" max="20" value="8"></label>
+  </div>
+  <div class="grid">
+    <div><div class="muted">לאדם</div><div class="metric" id="per-person"></div></div>
+    <div><div class="muted">לכל הקבוצה</div><div class="metric" id="group-total"></div></div>
+  </div>
+</section>
+</main>
+<footer>בסיס מודולרי להמשך תכנון הטיול · GitHub Pages Ready</footer>
+</body>
+</html>
