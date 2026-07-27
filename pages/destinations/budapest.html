@@ -54,6 +54,32 @@
   </div>
 </section>
 
+<section class="section destination-lodging-section" aria-labelledby="destination-lodging-title">
+  <div class="section-header">
+    <div>
+      <span class="eyebrow">שלב 2.2 · לינה</span>
+      <h2 id="destination-lodging-title">אפשרויות לינה</h2>
+      <p class="muted">אפשרויות Airbnb לקבוצה. אפשר להוסיף לינה מקומית, או להדביק קישור ל-Claude כדי לשמור אותה לכולם.</p>
+    </div>
+    <button type="button" id="add-lodging" class="btn secondary">הוסף לינה</button>
+  </div>
+  <form id="lodging-form" class="lodging-form card" hidden>
+    <label>קישור Airbnb <input class="control" name="url" type="url" placeholder="https://www.airbnb.com/rooms/..."></label>
+    <label>שם הנכס <input class="control" name="name" type="text" placeholder="דירה במרכז"></label>
+    <label>מחיר <input class="control" name="price" type="text" placeholder="לדוגמה: €1,200 לכל השהות"></label>
+    <label>דירוג <input class="control" name="rating" type="text" placeholder="4.9"></label>
+    <label>מיקום <input class="control" name="location" type="text" placeholder="מרכז העיר"></label>
+    <label>אורחים <input class="control" name="guests" type="text" placeholder="8"></label>
+    <label class="lodging-form-wide">הערות <input class="control" name="notes" type="text" placeholder="כניסה 12/10, יציאה 17/10"></label>
+    <div class="lodging-form-actions">
+      <button type="submit" class="btn">שמירה</button>
+    </div>
+  </form>
+  <div id="destination-lodging" class="card">
+    <p class="muted">טוען אפשרויות לינה…</p>
+  </div>
+</section>
+
 <section class="section destination-overview-grid">
   <div class="card">
     <span class="eyebrow">למה כן</span>

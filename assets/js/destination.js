@@ -43,6 +43,7 @@ document.addEventListener('DOMContentLoaded', async ()=>{
   }
 
   await loadDestinationFlights(key);
+  await loadDestinationLodging(key);
 });
 
 
@@ -94,4 +95,151 @@ function flightRow(option, averageDuration){
 function formatFlightDate(value){
   const [year,month,day]=value.split('-');
   return `${day}/${month}/${year}`;
+}
+
+
+function lodgingStorageKey(destinationId){
+  return `lodging:${destinationId}`;
+}
+
+function readLocalLodging(destinationId){
+  try{
+    const raw=localStorage.getItem(lodgingStorageKey(destinationId));
+    const parsed=raw?JSON.parse(raw):[];
+    return Array.isArray(parsed)?parsed:[];
+  }catch(error){
+    return [];
+  }
+}
+
+function writeLocalLodging(destinationId, listings){
+  try{
+    localStorage.setItem(lodgingStorageKey(destinationId), JSON.stringify(listings));
+  }catch(error){
+    /* storage unavailable (private mode / quota) — row stays in memory only */
+  }
+}
+
+async function loadDestinationLodging(destinationId){
+  const host=document.querySelector('#destination-lodging');
+  if(!host) return;
+
+  let shared=[];
+  try{
+    const response=await fetch('../../data/lodging/index.json');
+    if(!response.ok) throw new Error('Lodging data request failed');
+    const data=await response.json();
+    const entry=data.destinations.find(item=>item.id===destinationId);
+    shared=(entry && Array.isArray(entry.listings))?entry.listings:[];
+  }catch(error){
+    host.innerHTML='<div class="notice">לא ניתן לטעון את נתוני הלינה. יש לפתוח את האתר דרך GitHub Pages או שרת מקומי.</div>';
+    return;
+  }
+
+  const renderList=()=>{
+    const local=readLocalLodging(destinationId);
+    const rows=[
+      ...shared.map(item=>lodgingRow(item,false)),
+      ...local.map((item,index)=>lodgingRow(item,true,index))
+    ];
+    host.innerHTML=`
+      <div class="destination-lodging-list">
+        ${rows.length?rows.join(''):'<p class="muted">אין עדיין אפשרויות לינה. הוסיפו לינה או הדביקו קישור Airbnb ל-Claude.</p>'}
+      </div>
+      <p class="flight-source-note">מחירי Airbnb אינם נשלפים אוטומטית — יש לאמת בקישור החי. כדי לשמור לינה לכולם, הדביקו את הקישור ל-Claude.</p>`;
+
+    host.querySelectorAll('[data-remove-local]').forEach(button=>{
+      button.addEventListener('click', ()=>{
+        const idx=Number(button.dataset.removeLocal);
+        const list=readLocalLodging(destinationId);
+        list.splice(idx,1);
+        writeLocalLodging(destinationId,list);
+        renderList();
+      });
+    });
+  };
+
+  renderList();
+  wireLodgingForm(destinationId, renderList);
+}
+
+function wireLodgingForm(destinationId, onSaved){
+  const toggle=document.querySelector('#add-lodging');
+  const form=document.querySelector('#lodging-form');
+  if(!toggle || !form) return;
+
+  toggle.addEventListener('click', ()=>{
+    const showing=form.hasAttribute('hidden');
+    if(showing) form.removeAttribute('hidden'); else form.setAttribute('hidden','');
+    toggle.textContent=showing?'סגירת הטופס':'הוסף לינה';
+  });
+
+  form.addEventListener('submit', event=>{
+    event.preventDefault();
+    const value=name=>form.querySelector(`[name="${name}"]`).value.trim();
+    const url=value('url');
+    if(url && !/airbnb\./i.test(url)){
+      form.querySelector('[name="url"]').setCustomValidity('נא להדביק קישור Airbnb תקין');
+      form.querySelector('[name="url"]').reportValidity();
+      return;
+    }
+    form.querySelector('[name="url"]').setCustomValidity('');
+
+    const listing={
+      name:value('name')||'לינה ללא שם',
+      url,
+      price:value('price')||null,
+      rating:value('rating')||'',
+      location:value('location')||'',
+      guests:value('guests')||'',
+      notes:value('notes')||''
+    };
+
+    const list=readLocalLodging(destinationId);
+    list.push(listing);
+    writeLocalLodging(destinationId,list);
+
+    form.reset();
+    form.setAttribute('hidden','');
+    toggle.textContent='הוסף לינה';
+    onSaved();
+  });
+}
+
+function lodgingRow(listing, isLocal, localIndex){
+  const nameHtml=listing.url
+    ? `<a href="${listing.url}" target="_blank" rel="noopener">${listing.name}</a>`
+    : `${listing.name}`;
+
+  const priceHtml=listing.price
+    ? `${listing.price}`
+    : (listing.priceNote || 'בדיקה חיה ב-Airbnb');
+
+  const capacityBits=[];
+  if(listing.guests) capacityBits.push(`👥 ${listing.guests} אורחים`);
+  if(listing.bedrooms) capacityBits.push(`🛏️ ${listing.bedrooms} חדרים`);
+  if(listing.beds) capacityBits.push(`${listing.beds} מיטות`);
+  if(listing.bathrooms) capacityBits.push(`🚿 ${listing.bathrooms} מקלחות`);
+
+  const ratingHtml=listing.rating
+    ? `⭐ ${listing.rating}${listing.reviews?` · ${listing.reviews} ביקורות`:''}`
+    : '';
+
+  const removeHtml=isLocal
+    ? `<button type="button" class="lodging-remove" data-remove-local="${localIndex}" aria-label="הסרת לינה מקומית">הסרה</button>`
+    : '';
+
+  return `<article class="destination-lodging-row">
+    <div class="lodging-row-main">
+      <strong class="lodging-name">${nameHtml}${isLocal?' <span class="tag-local">מקומי</span>':''}</strong>
+      ${listing.location?`<span class="lodging-location">📍 ${listing.location}</span>`:''}
+      ${capacityBits.length?`<span class="lodging-capacity">${capacityBits.join(' · ')}</span>`:''}
+      ${listing.notes?`<span class="lodging-notes muted">${listing.notes}</span>`:''}
+    </div>
+    <div class="lodging-row-side">
+      <div class="lodging-price"><small>מחיר</small><strong>${priceHtml}</strong></div>
+      ${ratingHtml?`<div class="lodging-rating">${ratingHtml}</div>`:''}
+      ${removeHtml}
+    </div>
+  </article>`;
 }

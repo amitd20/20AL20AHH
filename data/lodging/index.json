@@ -1,0 +1,41 @@
+{
+  "version": "1.0.0",
+  "updated": "2026-07-27",
+  "source": "Airbnb",
+  "note": "מחירי Airbnb אינם נשלפים אוטומטית ואין להמציא אותם — יש לאמת בקישור החי.",
+  "destinations": [
+    {
+      "id": "prague",
+      "name": "פראג",
+      "flag": "🇨🇿",
+      "listings": [
+        {
+          "name": "Big cozy apartment in the centre (5 BDRS + 3 BTHR)",
+          "url": "https://www.airbnb.ie/rooms/43884428?adults=8&check_in=2026-10-12&check_out=2026-10-17&search_mode=regular_search&source_impression_id=p3_1785131700_P3b2bBWYM8gaZd5t&previous_page_section_name=1000&federated_search_id=a4808d2b-2b58-480b-a342-fff6173936be",
+          "guests": 11,
+          "bedrooms": 5,
+          "beds": 11,
+          "bathrooms": 3,
+          "rating": "4.89",
+          "reviews": 399,
+          "location": "Prague 1 · כ־700 מ' מכיכר העיר העתיקה",
+          "price": null,
+          "priceNote": "בדיקה חיה ב-Airbnb",
+          "notes": "Superhost, כניסה 12/10 ויציאה 17/10 (5 לילות)."
+        }
+      ]
+    },
+    {
+      "id": "krakow",
+      "name": "קרקוב",
+      "flag": "🇵🇱",
+      "listings": []
+    },
+    {
+      "id": "budapest",
+      "name": "בודפשט",
+      "flag": "🇭🇺",
+      "listings": []
+    }
+  ]
+}

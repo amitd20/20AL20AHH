@@ -415,3 +415,43 @@ footer{background:rgba(7,17,31,.55)}
   .weather-metrics{grid-template-columns:1fr}
   .weather-comfort{grid-column:auto}
 }
+
+/* v1.0.14 lodging (לינה) — Airbnb options; no yellow */
+.destination-lodging-section{margin-top:34px}
+.lodging-form{
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-bottom:18px;
+}
+.lodging-form label{display:flex;flex-direction:column;gap:6px;color:var(--muted);font-size:.85rem;font-weight:700}
+.lodging-form .control{width:100%}
+.lodging-form-wide{grid-column:1/-1}
+.lodging-form-actions{grid-column:1/-1;display:flex;justify-content:flex-start}
+.destination-lodging-list{display:flex;flex-direction:column;gap:14px}
+.destination-lodging-row{
+  display:flex;justify-content:space-between;align-items:flex-start;gap:18px;
+  padding:16px 18px;border:1px solid var(--border);border-radius:14px;
+  background:rgba(255,255,255,.02);
+}
+.destination-lodging-row:hover{background:linear-gradient(90deg,rgba(56,189,248,.045),rgba(167,139,250,.035))}
+.lodging-row-main{display:flex;flex-direction:column;gap:6px;min-width:0}
+.lodging-name{font-size:1.05rem}
+.lodging-name a{color:var(--primary);font-weight:800}
+.lodging-location,.lodging-capacity{color:var(--muted);font-size:.9rem}
+.lodging-notes{font-size:.85rem}
+.lodging-row-side{display:flex;flex-direction:column;align-items:flex-end;gap:6px;text-align:left;white-space:nowrap}
+.lodging-price small{display:block;color:var(--muted);font-size:.76rem;font-weight:700;margin-bottom:2px}
+.lodging-price strong{color:var(--primary);font-size:1.05rem}
+.lodging-rating{color:var(--accent);font-weight:700;font-size:.9rem}
+.tag-local{
+  font-size:.7rem;font-weight:800;padding:2px 8px;border-radius:999px;margin-right:6px;
+  background:rgba(34,197,94,.16);color:var(--success);vertical-align:middle;
+}
+.lodging-remove{
+  background:transparent;border:1px solid var(--border);color:var(--muted);
+  padding:4px 10px;border-radius:8px;font-size:.8rem;cursor:pointer;
+}
+.lodging-remove:hover{color:var(--text);border-color:var(--primary)}
+@media(max-width:700px){
+  .lodging-form{grid-template-columns:1fr}
+  .destination-lodging-row{flex-direction:column}
+  .lodging-row-side{align-items:flex-start;text-align:right}
+}

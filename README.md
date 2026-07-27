@@ -109,3 +109,18 @@ Stage 1 completed: visual redesign of the homepage and destination pages.
 - Fixed empty destination weather cards.
 - Added destination-specific temperature, rain, daylight, sunrise, sunset and comfort data.
 - Removed the duplicate three-city weather table from destination pages.
+
+## Version 1.0.14
+
+- Added a Lodging ("לינה") card to every destination page, listing Airbnb options.
+- Lodging data lives in `data/lodging/index.json` (one entry per destination), following the same data-driven pattern as flights.
+- Added an on-site "הוסף לינה" button that opens a form to add a listing manually; locally-added rows are saved in the browser (`localStorage`, key `lodging:<id>`) and tagged "מקומי".
+- Airbnb prices are intentionally not fabricated when unavailable — shown as "בדיקה חיה ב-Airbnb", consistent with the flights module.
+
+### Add lodging
+
+Two ways to add a listing:
+
+1. **Shared / permanent** — paste the Airbnb link to Claude. The details are extracted and written into `data/lodging/index.json`, so everyone visiting the site sees the row. (A browser on GitHub Pages cannot scrape Airbnb directly — CORS blocks it — so this step is done via Claude, not in the page.)
+2. **Local / personal** — click **הוסף לינה** on the destination page, paste the link and fill the fields. The row is saved in your browser only and survives refreshes on that device.
+
