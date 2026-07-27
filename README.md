@@ -124,3 +124,11 @@ Two ways to add a listing:
 1. **Shared / permanent** — paste the Airbnb link to Claude. The details are extracted and written into `data/lodging/index.json`, so everyone visiting the site sees the row. (A browser on GitHub Pages cannot scrape Airbnb directly — CORS blocks it — so this step is done via Claude, not in the page.)
 2. **Local / personal** — click **הוסף לינה** on the destination page, paste the link and fill the fields. The row is saved in your browser only and survives refreshes on that device.
 
+## Version 1.0.15
+
+- Lodging card now supports full CRUD in the browser (local overlay model).
+- On first visit per destination, the committed `data/lodging/index.json` rows are seeded into `localStorage` (`lodging:<id>`, with a `lodging:<id>:seeded` flag). After that, `data/lodging/index.json` is only the initial seed.
+- Every row — JSON-origin or user-added — can be edited (**עריכה**) and removed (**הסרה**); the same form is reused for add and edit.
+- Added **איפוס לרשימה המשותפת** to discard local changes and re-seed from the shared JSON.
+- All changes are per-device (localStorage) and are not shared. To update the list everyone sees, paste the link/change to Claude to update `data/lodging/index.json`.
+

@@ -102,6 +102,10 @@ function lodgingStorageKey(destinationId){
   return `lodging:${destinationId}`;
 }
 
+function lodgingSeededKey(destinationId){
+  return `lodging:${destinationId}:seeded`;
+}
+
 function readLocalLodging(destinationId){
   try{
     const raw=localStorage.getItem(lodgingStorageKey(destinationId));
@@ -120,6 +124,23 @@ function writeLocalLodging(destinationId, listings){
   }
 }
 
+// Seed the committed JSON rows into localStorage once per device, then all
+// rows (JSON-origin + user-added) are edited locally. JSON is only the seed.
+function seedLodging(destinationId, sharedListings){
+  let seeded=false;
+  try{ seeded=localStorage.getItem(lodgingSeededKey(destinationId))==='1'; }catch(error){ seeded=false; }
+  if(seeded) return;
+  const existing=readLocalLodging(destinationId);
+  const merged=existing.length?existing:sharedListings.map(item=>({...item}));
+  writeLocalLodging(destinationId, merged);
+  try{ localStorage.setItem(lodgingSeededKey(destinationId),'1'); }catch(error){/* ignore */}
+}
+
+function resetLodging(destinationId, sharedListings){
+  writeLocalLodging(destinationId, sharedListings.map(item=>({...item})));
+  try{ localStorage.setItem(lodgingSeededKey(destinationId),'1'); }catch(error){/* ignore */}
+}
+
 async function loadDestinationLodging(destinationId){
   const host=document.querySelector('#destination-lodging');
   if(!host) return;
@@ -136,23 +157,23 @@ async function loadDestinationLodging(destinationId){
     return;
   }
 
+  seedLodging(destinationId, shared);
+
   const renderList=()=>{
-    const local=readLocalLodging(destinationId);
-    const rows=[
-      ...shared.map(item=>lodgingRow(item,false)),
-      ...local.map((item,index)=>lodgingRow(item,true,index))
-    ];
+    const rows=readLocalLodging(destinationId);
     host.innerHTML=`
       <div class="destination-lodging-list">
-        ${rows.length?rows.join(''):'<p class="muted">אין עדיין אפשרויות לינה. הוסיפו לינה או הדביקו קישור Airbnb ל-Claude.</p>'}
+        ${rows.length?rows.map((item,index)=>lodgingRow(item,index)).join(''):'<p class="muted">אין עדיין אפשרויות לינה. הוסיפו לינה או הדביקו קישור Airbnb ל-Claude.</p>'}
       </div>
-      <p class="flight-source-note">מחירי Airbnb אינם נשלפים אוטומטית — יש לאמת בקישור החי. כדי לשמור לינה לכולם, הדביקו את הקישור ל-Claude.</p>`;
+      <p class="flight-source-note">כל השינויים נשמרים בדפדפן זה בלבד. הרשימה הראשונית נטענת מ-data/lodging. כדי לעדכן את הרשימה המשותפת לכולם — הדביקו את הקישור ל-Claude.</p>`;
 
-    host.querySelectorAll('[data-remove-local]').forEach(button=>{
+    host.querySelectorAll('[data-edit]').forEach(button=>{
+      button.addEventListener('click', ()=>openLodgingForm(destinationId, renderList, Number(button.dataset.edit)));
+    });
+    host.querySelectorAll('[data-remove]').forEach(button=>{
       button.addEventListener('click', ()=>{
-        const idx=Number(button.dataset.removeLocal);
         const list=readLocalLodging(destinationId);
-        list.splice(idx,1);
+        list.splice(Number(button.dataset.remove),1);
         writeLocalLodging(destinationId,list);
         renderList();
       });
@@ -160,32 +181,82 @@ async function loadDestinationLodging(destinationId){
   };
 
   renderList();
-  wireLodgingForm(destinationId, renderList);
+  wireLodgingForm(destinationId, renderList, shared);
 }
 
-function wireLodgingForm(destinationId, onSaved){
+// Fill the form with an existing row's values and reveal it for editing.
+function openLodgingForm(destinationId, onSaved, editIndex){
   const toggle=document.querySelector('#add-lodging');
   const form=document.querySelector('#lodging-form');
+  if(!form) return;
+  const listing=readLocalLodging(destinationId)[editIndex]||{};
+  const set=(name,val)=>{ const el=form.querySelector(`[name="${name}"]`); if(el) el.value=val==null?'':val; };
+  set('url',listing.url);
+  set('name',listing.name);
+  set('price',listing.price);
+  set('rating',listing.rating);
+  set('location',listing.location);
+  set('guests',listing.guests);
+  set('notes',listing.notes);
+  form.dataset.editIndex=String(editIndex);
+  form.removeAttribute('hidden');
+  if(toggle) toggle.textContent='סגירת הטופס';
+  const submit=form.querySelector('button[type="submit"]');
+  if(submit) submit.textContent='עדכון';
+  form.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+function wireLodgingForm(destinationId, onSaved, shared){
+  const toggle=document.querySelector('#add-lodging');
+  const form=document.querySelector('#lodging-form');
+  const reset=document.querySelector('#reset-lodging');
   if(!toggle || !form) return;
 
+  const closeForm=()=>{
+    form.reset();
+    delete form.dataset.editIndex;
+    form.setAttribute('hidden','');
+    toggle.textContent='הוסף לינה';
+    const submit=form.querySelector('button[type="submit"]');
+    if(submit) submit.textContent='שמירה';
+  };
+
   toggle.addEventListener('click', ()=>{
-    const showing=form.hasAttribute('hidden');
-    if(showing) form.removeAttribute('hidden'); else form.setAttribute('hidden','');
-    toggle.textContent=showing?'סגירת הטופס':'הוסף לינה';
+    if(form.hasAttribute('hidden')){
+      form.reset();
+      delete form.dataset.editIndex;
+      form.removeAttribute('hidden');
+      toggle.textContent='סגירת הטופס';
+      const submit=form.querySelector('button[type="submit"]');
+      if(submit) submit.textContent='שמירה';
+    }else{
+      closeForm();
+    }
   });
+
+  if(reset){
+    reset.addEventListener('click', ()=>{
+      if(confirm('לאפס לרשימת הלינה המשותפת? כל השינויים המקומיים יימחקו.')){
+        resetLodging(destinationId, shared);
+        closeForm();
+        onSaved();
+      }
+    });
+  }
 
   form.addEventListener('submit', event=>{
     event.preventDefault();
     const value=name=>form.querySelector(`[name="${name}"]`).value.trim();
+    const urlEl=form.querySelector('[name="url"]');
     const url=value('url');
     if(url && !/airbnb\./i.test(url)){
-      form.querySelector('[name="url"]').setCustomValidity('נא להדביק קישור Airbnb תקין');
-      form.querySelector('[name="url"]').reportValidity();
+      urlEl.setCustomValidity('נא להדביק קישור Airbnb תקין');
+      urlEl.reportValidity();
       return;
     }
-    form.querySelector('[name="url"]').setCustomValidity('');
+    urlEl.setCustomValidity('');
 
-    const listing={
+    const fields={
       name:value('name')||'לינה ללא שם',
       url,
       price:value('price')||null,
@@ -196,17 +267,21 @@ function wireLodgingForm(destinationId, onSaved){
     };
 
     const list=readLocalLodging(destinationId);
-    list.push(listing);
+    const editIndex=form.dataset.editIndex;
+    if(editIndex!==undefined && list[Number(editIndex)]){
+      // Preserve richer seeded fields (bedrooms/beds/bathrooms/reviews) on edit.
+      list[Number(editIndex)]={...list[Number(editIndex)], ...fields};
+    }else{
+      list.push(fields);
+    }
     writeLocalLodging(destinationId,list);
 
-    form.reset();
-    form.setAttribute('hidden','');
-    toggle.textContent='הוסף לינה';
+    closeForm();
     onSaved();
   });
 }
 
-function lodgingRow(listing, isLocal, localIndex){
+function lodgingRow(listing, index){
   const nameHtml=listing.url
     ? `<a href="${listing.url}" target="_blank" rel="noopener">${listing.name}</a>`
     : `${listing.name}`;
@@ -225,13 +300,9 @@ function lodgingRow(listing, isLocal, localIndex){
     ? `⭐ ${listing.rating}${listing.reviews?` · ${listing.reviews} ביקורות`:''}`
     : '';
 
-  const removeHtml=isLocal
-    ? `<button type="button" class="lodging-remove" data-remove-local="${localIndex}" aria-label="הסרת לינה מקומית">הסרה</button>`
-    : '';
-
   return `<article class="destination-lodging-row">
     <div class="lodging-row-main">
-      <strong class="lodging-name">${nameHtml}${isLocal?' <span class="tag-local">מקומי</span>':''}</strong>
+      <strong class="lodging-name">${nameHtml}</strong>
       ${listing.location?`<span class="lodging-location">📍 ${listing.location}</span>`:''}
       ${capacityBits.length?`<span class="lodging-capacity">${capacityBits.join(' · ')}</span>`:''}
       ${listing.notes?`<span class="lodging-notes muted">${listing.notes}</span>`:''}
@@ -239,7 +310,10 @@ function lodgingRow(listing, isLocal, localIndex){
     <div class="lodging-row-side">
       <div class="lodging-price"><small>מחיר</small><strong>${priceHtml}</strong></div>
       ${ratingHtml?`<div class="lodging-rating">${ratingHtml}</div>`:''}
-      ${removeHtml}
+      <div class="lodging-actions">
+        <button type="button" class="lodging-edit" data-edit="${index}" aria-label="עריכת לינה">עריכה</button>
+        <button type="button" class="lodging-remove" data-remove="${index}" aria-label="הסרת לינה">הסרה</button>
+      </div>
     </div>
   </article>`;
 }

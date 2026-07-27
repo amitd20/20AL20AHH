@@ -61,7 +61,10 @@
       <h2 id="destination-lodging-title">אפשרויות לינה</h2>
       <p class="muted">אפשרויות Airbnb לקבוצה. אפשר להוסיף לינה מקומית, או להדביק קישור ל-Claude כדי לשמור אותה לכולם.</p>
     </div>
-    <button type="button" id="add-lodging" class="btn secondary">הוסף לינה</button>
+    <div class="lodging-header-actions">
+      <button type="button" id="add-lodging" class="btn secondary">הוסף לינה</button>
+      <button type="button" id="reset-lodging" class="btn ghost">איפוס לרשימה המשותפת</button>
+    </div>
   </div>
   <form id="lodging-form" class="lodging-form card" hidden>
     <label>קישור Airbnb <input class="control" name="url" type="url" placeholder="https://www.airbnb.com/rooms/..."></label>
