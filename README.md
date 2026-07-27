@@ -132,3 +132,8 @@ Two ways to add a listing:
 - Added **איפוס לרשימה המשותפת** to discard local changes and re-seed from the shared JSON.
 - All changes are per-device (localStorage) and are not shared. To update the list everyone sees, paste the link/change to Claude to update `data/lodging/index.json`.
 
+## Version 1.0.16
+
+- Centralized the site version: it now lives in a single `SITE_VERSION` constant in `assets/js/app.js`, which renders into every `.header-version` badge on load.
+- To bump the version, edit **one line** (`SITE_VERSION` in `assets/js/app.js`) — no need to touch each HTML page. The `v1.0.x` text in each page's header is only a pre-JS fallback.
+
